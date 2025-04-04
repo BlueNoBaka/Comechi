@@ -696,6 +696,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             'fc_use_device': 'null',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36', }
 
+        channel_name = self.source.split('/')[-3]
+        fcid_request = requests.get(f'https://api.nicochannel.jp/fc/content_providers/channel_domain?current_site_domain=https:%2F%2Fnicochannel.jp%2F{channel_name}', headers=headers)
+        fcid = json.loads(fcid_request.text)['data']['content_providers']['id']
+        headers['fc_site_id'] = str(fcid)
+
         content_code = self.source.split('/')[-1]
         url_page = f'https://nfc-api.nicochannel.jp/fc/video_pages/{content_code}'
         url_token = f'https://nfc-api.nicochannel.jp/fc/video_pages/{content_code}/comments_user_token'
